@@ -16,19 +16,17 @@ body {
 
 .container {
   margin-bottom: 2em;
+  background-color: #06090e;
+  background-color: rgba(6, 9, 14, .85);
 }
 
 .header {
   margin-top: none;
   height: 30vh;
-  background-color: #06090e;
-  background-color: rgba(6, 9, 14, .85);
   text-align: center;
   display: flex;
   align-items: center;
 }
 
 .main {
-  background-color: #06090e;
-  background-color: rgba(6, 9, 14, .85);
 }
