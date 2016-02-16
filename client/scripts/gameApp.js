@@ -1,10 +1,7 @@
-//TODO: Render
-//TODO: Request "animation frame"
-
 //Initialize canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = 512;
+canvas.width = 640;
 canvas.height = 480;
 document.body.appendChild(canvas);
 
@@ -13,6 +10,17 @@ var lastTime;
 var gameTime = 0;
 var appWidth = canvas.getAttribute('width');
 var appHeight = canvas.getAttribute('height');
+
+//resource prep
+resources.load([
+  //TODO add sprite sheet paths
+    /*'...png',
+    '...png',
+    '...png'
+    */
+]);
+
+resources.onReady(initialize);
 
 //main game Loop
 function main (){
@@ -32,17 +40,6 @@ function initialize(){
   main();
 };
 
-//resource prep
-resources.load([
-  //TODO add sprite sheets paths
-    '..',
-    '...',
-    '...'
-]);
-
-resources.onReady(initialize);
-
-
 function update(dt){
   gameTime += dt;
   checkInput(dt);
@@ -61,3 +58,7 @@ function updateEntities(dt){
 function render(){
   //TODO add logic to display elements at correct locations
 };
+
+function requestAnimFrame(){
+  //TODO add logic for animation
+}
