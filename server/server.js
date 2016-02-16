@@ -1,7 +1,10 @@
 var bodyParser = require('body-parser');
 var express = require('express');
 var request = require('request');
+var fs = require('fs');
+
 var app = express();
+
 
 app.use(bodyParser.json());
 
@@ -16,6 +19,20 @@ app.use(function(req, res, next){
   next();
 });
 
+// download function sourced from http://stackoverflow.com/questions/12740659/downloading-images-with-node-js
+var download = function(uri, filename, callback){
+  request.head(uri, function(err, res, body){
+    console.log('content-type:', res.headers['content-type']);
+    console.log('content-length:', res.headers['content-length']);
+
+    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+  });
+};
+/*--------- Download() example
+download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function(){
+  console.log('done');
+});
+*/
 
 var db = {
   pokemon: [
@@ -39,10 +56,14 @@ function requestPokemonList(){
 */
 
 function requestSpriteUrl(pokemon) {
-  console.log(pokemon.sprites);
-  spriteUrl = pokemon.sprites[0].resource_uri;
+  var pokeId = pokemon.pkdx_id;
+  var spriteUrl = pokemon.sprites[0].resource_uri;
   request('http://pokeapi.co/'+spriteUrl, function(error, response, body) {
-    console.log(JSON.parse(body).image);
+    var spriteUrl = 'http://pokeapi.co' + JSON.parse(body).image;
+    console.log('Requesting sprite fo Pokemon #' + pokeId);
+    download(spriteUrl, 'media/' + pokeId + '.png', function() {
+      console.log('Sprite downloaded for pokemon #' + pokeId);
+    });
   });
 
 }
@@ -53,7 +74,6 @@ function requestPokemonSingular(url, current, max){
     body = JSON.parse(body);
     db.pokemon.push(body);
     console.log('Pokemon #'+current+' downloaded...');
-    console.log('Sprite at :');
     requestSpriteUrl(body);
     if (max == db.pokemon.length) {
       console.log('download complete');
