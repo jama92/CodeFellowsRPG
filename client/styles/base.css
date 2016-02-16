@@ -1,3 +1,34 @@
 * {
-  border: solid;
+  color: white;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  background-image: url("/images/desk1.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  padding-bottom: 100vh;
+}
+
+.container {
+  margin-bottom: 2em;
+}
+
+.header {
+  margin-top: none;
+  height: 30vh;
+  background-color: #06090e;
+  background-color: rgba(6, 9, 14, .85);
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.main {
+  background-color: #06090e;
+  background-color: rgba(6, 9, 14, .85);
 }
