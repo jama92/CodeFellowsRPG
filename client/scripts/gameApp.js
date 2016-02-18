@@ -12,7 +12,8 @@ var attackButton = {
 
 var hero = {
   name:'Charlie',
-  hp: 2000
+  hp: 2000,
+  attack: 100
 };
 
 var enemy = {
@@ -28,10 +29,11 @@ function battleState(){
   var heroStats = new Image();
   var battleOptions = new Image();
   var shield = new Image();
-  heroStats.src = 'images/heroStatus.png';
+  var textbox = new Image();
+  heroStats.src = 'images/battleScene/heroStatus.png';
   monster.src = 'images/monster0.png';
-  background.src = 'images/bg.png';
-  battleOptions.src = 'images/battleOptions.png';
+  background.src = 'images/battleScene/bg.png';
+  battleOptions.src = 'images/battleScene/battleOptions.png';
   shield.src = 'images/shield.png';
 
   background.onload = function(){
@@ -116,58 +118,10 @@ function battleState(){
       ctx.fillText('Attack', 200, 395);
       console.log('transition complete!'); }, 10);
   }
+
+  function showTextBox(){
+    ctx
+  }
+
   battleScene();
-
 };
-//TODO wrap this in document loader function
-
-
-
-//resource prep
-// resources.load([
-//   //TODO add sprite sheet paths
-//     /*'...png',
-//     '...png',
-//     '...png'
-//     */
-// ]);
-
-//resources.onReady(initialize);
-
-//main game Loop
-// function main (){
-//   //create variables for keeping track of change in time between game updates (delta time)
-//   var now = Date.now();
-//   var dt = (now - lastTime)/1000.0;
-//   update(dt);
-//   render();
-//   lastTime = now;
-//   requestAnimFrame();
-//
-// };
-//
-//
-// function initialize(){
-//   //TODO add initial map state
-//   lastTime = Date.now;
-//   main();
-// };
-//
-// function update(dt){
-//   gameTime += dt;
-//   checkInput(dt);
-//   updateEntities(dt);
-// };
-//
-// function checkInput(dt){
-//   //TODO add logic for different keydowns or mouse events
-// };
-//
-// function updateEntities(dt){
-//   //TODO add logic to update changes made to sceen or map
-// };
-//
-// //draw everything
-// function render(){
-//   //TODO add logic to display elements at correct locations
-// };
