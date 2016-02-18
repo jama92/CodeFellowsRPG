@@ -1,17 +1,9 @@
-//Initialize canvas
-var canvas = document.createElement('canvas');
-var ctx = canvas.getContext('2d');
-canvas.width = 640;
-canvas.height = 480;
-document.body.appendChild(canvas);
 
-//create all global variables
+
 var lastTime;
 var gameTime = 0;
-var appWidth = canvas.getAttribute('width');
-var appHeight = canvas.getAttribute('height');
-var mouseX;
-var mouseY;
+// var appWidth = canvas.getAttribute('width');
+// var appHeight = canvas.getAttribute('height');
 var attackButton = {
   x:195,
   y:385,
@@ -21,174 +13,119 @@ var attackButton = {
 
 var hero = {
   name:'Charlie',
-  hp: 9999
+  hp: 2000,
+  attack: 100
 };
 
 var enemy = {
   name:'bug',
-  hp: 9999
+  hp: 1000
 };
 
-//TODO wrap this in document loader function
 var background = new Image();
 var monster = new Image();
 var heroStats = new Image();
 var battleOptions = new Image();
 var shield = new Image();
-heroStats.src = 'images/heroStatus.png';
+var textbox = new Image();
+heroStats.src = 'images/battleScene/heroStatus.png';
 monster.src = 'images/monster0.png';
-background.src = 'images/bg.png';
-battleOptions.src = 'images/battleOptions.png';
+background.src = 'images/battleScene/bg.png';
+battleOptions.src = 'images/battleScene/battleOptions.png';
 shield.src = 'images/shield.png';
 
-ctx.drawImage(background,0,0);
-ctx.drawImage(monster,282,140);
-ctx.drawImage(heroStats,5,375);
-ctx.drawImage(battleOptions, 155, 375);
-ctx.drawImage(shield, 165, 375);
-
-//text stuff for heroStatus
-ctx.font = '14px Arial';
-ctx.fillStyle = 'white';
-ctx.fillText('Hero Name',10,390);
-ctx.fillText('HP:',10,420);
-
-//text stuff for battleOptions
-ctx.fillText('Attack', 200, 395);
-
-canvas.addEventListener('mousemove', checkPos);
-
-function checkPos(mouseEvent){
-  mouseX = mouseEvent.pageX - this.offsetLeft;
-  mouseY = mouseEvent.pageY - this.offsetTop;
-  // console.log(mouseX);
-  // console.log(mouseY);
-};
-function heroAttack(){
-  var dmg = Math.floor((Math.random() * 100) + 100);
-  enemy.hp -= dmg;
-  console.log('new monster hp is ' + enemy.hp);
-  console.log(dmg);
-  return dmg;
-}
-
-function monsterAttack(){
-  var dmg = Math.floor((Math.random() * 100) + 100);
-  hero.hp -= dmg;
-  console.log('monster does ' + dmg);
-  console.log('your new hp is ' + hero.hp);
-  canvas.addEventListener('mouseup', checkClick);
-  return dmg;
-};
+function battleState(){
+  clearCanvas(ctx);
 
 
-canvas.addEventListener('mouseup', checkClick);
 
-function checkClick(dmg){
-  if(mouseX > attackButton.x && mouseX < attackButton.x + attackButton.width){
-    if(mouseY > attackButton.y && mouseY < attackButton.y + attackButton.height){
-      dmg = heroAttack();
-      console.log('you did ' + dmg + ' dmg!');
-      console.log('you clicked attack!');
-      canvas.removeEventListener('mouseup', checkClick);
-      monsterAttack();
+  background.onload = function(){
+    ctx.drawImage(background,0,0);
+  };
+  monster.onload = function(){
+    ctx.drawImage(monster,282,140);
+  };
+  heroStats.onload = function(){
+    ctx.drawImage(heroStats,5,375);
+  };
+  battleOptions.onload = function(){
+    ctx.drawImage(battleOptions, 155, 375);
+  };
+  // shield.onload = function(){
+  //   ctx.drawImage(shield, 165, 375);
+  // };
 
-    }
+  canvas.addEventListener('mousemove', checkPosBattle);
+
+  function checkPosBattle(mouseEvent){
+    mouseX = mouseEvent.pageX - this.offsetLeft;
+    mouseY = mouseEvent.pageY - this.offsetTop;
+    // console.log(mouseX);
+    // console.log(mouseY);
+  };
+  function heroAttack(){
+    var dmg = Math.floor((Math.random() * 100) + 100);
+    enemy.hp -= dmg;
+    console.log('new monster hp is ' + enemy.hp);
+    console.log(dmg);
+    return dmg;
   }
-};
 
-
-
-//resource prep
-resources.load([
-  //TODO add sprite sheet paths
-    /*'...png',
-    '...png',
-    '...png'
-    */
-]);
-
-resources.onReady(initialize);
-
-
-
-
-
-var FPS = 60;
-var now = Date.now();
-var dt;
-var last = now;
-
-//check for animation frame function supported by browser. if IE9 use setInterval
-var animationFrame = window.requestAnimationFrame ||
-                     window.webkitRequestAnimationFrame ||
-                     window.mozRequestAnimationFrame ||
-                     window.oRequestAnimationFrame ||
-                     window.msRequestAnimationFrame ||
-                     null ;
-
-if (animationFrame !== null) {
-
-  function repeatAnimate() {
-
-    now = Date.now();
-    dt = (now - last) / 1000;    // duration in seconds
-    update(dt);
-    last = now;
-    animationFrame(repeatAnimate, canvas);
-
-    // fix to 60fps
-    // setTimeout(function() {
-    //   update();
-    // }, 1000/FPS);
-
+  function monsterAttack(){
+    var dmg = Math.floor((Math.random() * 100) + 100);
+    hero.hp -= dmg;
+    console.log('monster does ' + dmg);
+    console.log('your new hp is ' + hero.hp);
+    canvas.addEventListener('mouseup', checkClickBattle);
+    return dmg;
   };
 
-  //call frame repeatedly
-  animationFrame(repeatAnimate, canvas);
+  canvas.addEventListener('mouseup', checkClickBattle);
 
-}
+  function checkClickBattle(dmg){
+    if(mouseX > attackButton.x && mouseX < attackButton.x + attackButton.width){
+      if(mouseY > attackButton.y && mouseY < attackButton.y + attackButton.height){
+        dmg = heroAttack();
+        console.log('you did ' + dmg + ' dmg!');
+        console.log('you clicked attack!');
+        canvas.removeEventListener('mouseup', checkClickBattle);
+        monsterAttack();
+        if(enemy.hp <=0) {
+          console.log('You Win!');
+          canvas.removeEventListener('mouseup',checkClick);
+        }
+        else if(hero.hp <=0) {
+          console.log('Game Over');
+          canvas.removeEventListener('mouseup',checkClick);
+        }
+      }
+    }
+  };
 
-else {
+  function battleScene(){
+    clearCanvas(ctx);
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0,0,appWidth, appHeight);
+    setTimeout(function(){
+      ctx.drawImage(background,0,0);
+      ctx.drawImage(monster,282,140);
+      ctx.drawImage(heroStats,5,375);
+      ctx.drawImage(battleOptions, 155, 375);
+      ctx.drawImage(shield, 165, 375);
+      //text stuff for heroStatus
+      ctx.font = '14px Arial';
+      ctx.fillStyle = 'white';
+      ctx.fillText('Hero Name',10,390);
+      ctx.fillText('HP:',10,420);
+      //text stuff for battleOptions
+      ctx.fillText('Attack', 200, 395);
 
-  //fallback update for IE9
-  setInterval(update, 1000/FPS);
-}
+      showTextBox();
+
+      console.log('transition complete!'); }, 10);
+  }
 
 
+  battleScene();
 
-function main (){
-
-  //create variables for keeping track of change in time between game updates (delta time)
-};
-
-
-function initialize() {
-
-  //TODO add initial map state
-};
-
-function update(dt) {
-
-  gameTime += dt;
-  checkInput();
-  updateEntities();
-  render();
-  console.log('update');
-};
-
-function checkInput() {
-
-  //TODO add logic for different keydowns or mouse events
-};
-
-function updateEntities() {
-
-  //TODO add logic to update changes made to sceen or map
-};
-
-//draw everything
-function render() {
-
-  //TODO add logic to display elements at correct locations
 };
