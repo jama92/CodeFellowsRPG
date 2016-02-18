@@ -110,44 +110,85 @@ resources.load([
 
 resources.onReady(initialize);
 
-//main game Loop
+
+
+
+
+var FPS = 60;
+var now = Date.now();
+var dt;
+var last = now;
+
+//check for animation frame function supported by browser. if IE9 use setInterval
+var animationFrame = window.requestAnimationFrame ||
+                     window.webkitRequestAnimationFrame ||
+                     window.mozRequestAnimationFrame ||
+                     window.oRequestAnimationFrame ||
+                     window.msRequestAnimationFrame ||
+                     null ;
+
+if (animationFrame !== null) {
+
+  function repeatAnimate() {
+
+    now = Date.now();
+    dt = (now - last) / 1000;    // duration in seconds
+    update(dt);
+    last = now;
+    animationFrame(repeatAnimate, canvas);
+
+    // fix to 60fps
+    // setTimeout(function() {
+    //   update();
+    // }, 1000/FPS);
+
+  };
+
+  //call frame repeatedly
+  animationFrame(repeatAnimate, canvas);
+
+}
+
+else {
+
+  //fallback update for IE9
+  setInterval(update, 1000/FPS);
+}
+
+
+
 function main (){
+
   //create variables for keeping track of change in time between game updates (delta time)
-  var now = Date.now();
-  var dt = (now - lastTime)/1000.0;
-  update(dt);
-  render();
-  lastTime = now;
-  requestAnimFrame();
-
 };
 
 
-function initialize(){
+function initialize() {
+
   //TODO add initial map state
-  lastTime = Date.now;
-  main();
 };
 
-function update(dt){
+function update(dt) {
+
   gameTime += dt;
-  checkInput(dt);
-  updateEntities(dt);
+  checkInput();
+  updateEntities();
+  render();
+  console.log('update');
 };
 
-function checkInput(dt){
+function checkInput() {
+
   //TODO add logic for different keydowns or mouse events
 };
 
-function updateEntities(dt){
+function updateEntities() {
+
   //TODO add logic to update changes made to sceen or map
 };
 
 //draw everything
-function render(){
+function render() {
+
   //TODO add logic to display elements at correct locations
 };
-
-function requestAnimFrame(){
-  //TODO add logic for animation
-}
