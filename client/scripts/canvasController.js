@@ -21,8 +21,9 @@ function clearCanvas(contextNumber){
   contextNumber.clearRect(0,0,appWidth,appHeight);
 };
 
-//prep canvas based on layers. background should be first argument
-//topmost layer should be last.
+//to prepare a scene on hidden canvas
+//make sure to prep canvas based in order of layers. background should be
+//first argument...topmost layer should be last argument.
 function stageCanvas(img1,img2,img3,img4,img5){
   if(img1){
     ctx2.drawImage(img1, img1.xcoord, img1.ycoord);
