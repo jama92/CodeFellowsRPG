@@ -14,12 +14,12 @@ var mouseY;
   //events for main menu
   canvas.addEventListener('mousemove', checkPos);
   canvas.addEventListener('mousedown', checkClick);
-  //button sizes and locations
+//button sizes and locations
   var buttonX = [189,172,203];
   var buttonY = [336,378,421];
   var buttonWidth = [248,283,219];
   var buttonHeight = 29;
-  //codefellows logo animation vars
+//codefellows logo animation vars
   var shieldX = [0,0];
   var shieldY = [0,0];
   var shieldWidth = 25;
@@ -27,14 +27,14 @@ var mouseY;
   var shieldVis = false;
   var shieldSize = shieldWidth;
   var shieldRotate = 0;
-  //image prep for drawing to menu scene
+//image prep for drawing to menu scene
   var bgImage = new Image();
   var titleImage = new Image();
   var newGameImage = new Image();
   var loadGame = new Image();
   var creditsImage = new Image();
   var shieldImage = new Image();
-
+//add attributes to image objects
   bgImage.src = 'images/menu/menuBG.png';
   bgImage.xcoord = 0;
   bgImage.ycoord = 0;
@@ -51,7 +51,7 @@ var mouseY;
   creditsImage.xcoord = 203;
   creditsImage.ycoord = 421;
   shieldImage.src = 'images/menu/menuShield.png';
-
+  //draw images to canvas once they load
   bgImage.onload = function(){
     ctx.drawImage(bgImage, bgImage.xcoord, bgImage.ycoord);
   };
@@ -149,5 +149,4 @@ function fadeOut(){
     //DONE call function for button click from menu
     battleState();
     console.log('porting!');}, 500);
-
 }
