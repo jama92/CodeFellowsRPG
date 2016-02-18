@@ -7,7 +7,7 @@ html {
 }
 
 body {
-  background-image: url("/images/desk1.jpg");
+  background-image: url("../images/site/desk1.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -29,4 +29,12 @@ body {
 }
 
 .main {
+}
+
+#mycanvas{
+  text-align: center;
+}
+
+canvas {
+  background-color: black;
 }
