@@ -32,6 +32,7 @@ var download = function(uri, filename, callback){
     request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
   });
 };
+
 /*--------- Download() example
 download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function(){
   console.log('done');
@@ -39,7 +40,7 @@ download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function
 */
 
 var db = {
-  Pokemon: [
+  pokemon: [
 
   ],
 };
