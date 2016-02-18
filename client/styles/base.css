@@ -1,0 +1,44 @@
+* {
+  color: white;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+<<<<<<< HEAD
+  background-image: url("images/desk1.jpg");
+=======
+  background-image: url("../images/site/desk1.jpg");
+>>>>>>> 2c7c3f487d4df8571755b8f4643f179b624ca72b
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  padding-bottom: 100vh;
+}
+
+.container {
+  margin-bottom: 2em;
+  background-color: #06090e;
+  background-color: rgba(6, 9, 14, .85);
+}
+
+.header {
+  margin-top: none;
+  height: 30vh;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+.main {
+}
+
+#mycanvas{
+  text-align: center;
+}
+
+canvas {
+  background-color: black;
+}
