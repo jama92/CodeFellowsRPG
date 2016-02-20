@@ -21,8 +21,9 @@ function clearCanvas(contextNumber){
   contextNumber.clearRect(0,0,appWidth,appHeight);
 };
 
-//prep canvas based on layers. background should be first argument
-//topmost layer should be last.
+//to prepare a scene on hidden canvas
+//make sure to prep canvas based in order of layers. background should be
+//first argument...topmost layer should be last argument.
 function stageCanvas(img1,img2,img3,img4,img5){
   if(img1){
     ctx2.drawImage(img1, img1.xcoord, img1.ycoord);
@@ -57,4 +58,106 @@ function loadNewScene(){
 
 function passinImgs(){
   stageCanvas(bgImage,titleImage);
+}
+
+var fadeIn_alpha = 0;
+
+function fadeInCurrentCanvas(){
+  if(fadeIn_alpha > 10){
+    fadeIn_alpha = 10;
+  }
+  if(fadeIn_alpha < 10){
+    fadeIn_alpha++;
+    var calcfadeIn_alpha = fadeIn_alpha/10;
+    // console.log(fadeIn_alpha);
+    // console.log(calcfadeIn_alpha);
+    setTimeout(function(){
+      ctx.clearRect(0,0,appWidth, appHeight);
+      ctx.globalAlpha = calcfadeIn_alpha;
+      ctx.drawImage(currentCanvas, 0, 0);
+      fadeInCurrentCanvas();}, 100);
+    return fadeIn_alpha;
+  }
+  else{
+    fadeIn_alpha = 0;
+    return;
+  }
+
+};
+
+var fadeOut_alpha = 10;
+
+function fadeOutCurrentCanvas(){
+  if(fadeOut_alpha <= 0){
+    fadeOut_alpha = 0;
+  }
+  if(fadeOut_alpha > 0){
+    fadeOut_alpha--;
+    var calcfadeOut_alpha = fadeOut_alpha/10;
+    // console.log(fadeOut_alpha);
+    // console.log(calcfadeOut_alpha);
+    setTimeout(function(){
+      ctx.clearRect(0,0,appWidth, appHeight);
+      ctx.globalAlpha = calcfadeOut_alpha;
+      ctx.drawImage(currentCanvas, 0, 0);
+      fadeOutCurrentCanvas();}, 100);
+    // return fadeOut_alpha;
+  }
+  else{
+    fadeOut_alpha = 10;
+    return;
+  }
+};
+
+function quickFadeIn(){
+  //quick fadeIn
+  if(fadeIn_alpha > 10){
+    fadeIn_alpha = 10;
+  }
+  if(fadeIn_alpha < 10){
+    fadeIn_alpha++;
+    var calcfadeIn_alpha = fadeIn_alpha/10;
+    // console.log(fadeIn_alpha);
+    // console.log(calcfadeIn_alpha);
+    setTimeout(function(){
+      ctx.clearRect(0,0,appWidth, appHeight);
+      ctx.globalAlpha = calcfadeIn_alpha;
+      ctx.drawImage(currentCanvas, 0, 0);
+      quickFadeIn();}, 1);
+    return fadeIn_alpha;
+  }
+  else{
+    fadeIn_alpha = 0;
+    return;
+  }
+}
+
+function quickFadeOut(){
+  if(fadeOut_alpha <= 0){
+    fadeOut_alpha = 0;
+  }
+  if(fadeOut_alpha > 0){
+    fadeOut_alpha--;
+    var calcfadeOut_alpha = fadeOut_alpha/10;
+    // console.log(fadeOut_alpha);
+    // console.log(calcfadeOut_alpha);
+    setTimeout(function(){
+      ctx.clearRect(0,0,appWidth, appHeight);
+      ctx.globalAlpha = calcfadeOut_alpha;
+      ctx.drawImage(currentCanvas, 0, 0);
+      quickFadeOut();}, 1);
+    // return fadeOut_alpha;
+  }
+  else{
+    fadeOut_alpha = 10;
+    return;
+  }
+}
+
+function seizureMode(){
+  saveCanvas(canvas, ctx);
+  quickFadeIn();
+  quickFadeIn();
+  quickFadeIn();
+  quickFadeIn();
 }
