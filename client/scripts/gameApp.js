@@ -1,4 +1,3 @@
-
 var lastTime;
 var gameTime = 0;
 // var appWidth = canvas.getAttribute('width');
