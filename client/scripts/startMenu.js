@@ -52,21 +52,21 @@ var mouseY;
   creditsImage.ycoord = 421;
   shieldImage.src = 'images/menu/menuShield.png';
   //draw images to canvas once they load
-  bgImage.onload = function(){
-    ctx.drawImage(bgImage, bgImage.xcoord, bgImage.ycoord);
-  };
-  titleImage.onload = function(){
-    ctx.drawImage(titleImage, titleImage.xcoord, titleImage.ycoord);
-  };
-  newGameImage.onload = function(){
-    ctx.drawImage(newGameImage, newGameImage.xcoord, newGameImage.ycoord);
-  };
-  loadGame.onload = function(){
-    ctx.drawImage(loadGame, buttonX[1], buttonY[1]);
-  };
-  creditsImage.onload = function(){
-    ctx.drawImage(creditsImage, creditsImage.xcoord, creditsImage.ycoord);
-  };
+  // bgImage.onload = function(){
+  //   ctx.drawImage(bgImage, bgImage.xcoord, bgImage.ycoord);
+  // };
+  // titleImage.onload = function(){
+  //   ctx.drawImage(titleImage, titleImage.xcoord, titleImage.ycoord);
+  // };
+  // newGameImage.onload = function(){
+  //   ctx.drawImage(newGameImage, newGameImage.xcoord, newGameImage.ycoord);
+  // };
+  // loadGame.onload = function(){
+  //   ctx.drawImage(loadGame, buttonX[1], buttonY[1]);
+  // };
+  // creditsImage.onload = function(){
+  //   ctx.drawImage(creditsImage, creditsImage.xcoord, creditsImage.ycoord);
+  // };
 
   function draw(){
     ctx.drawImage(bgImage, bgImage.xcoord, bgImage.ycoord);
