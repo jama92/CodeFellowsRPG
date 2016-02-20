@@ -39,7 +39,7 @@ download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function
 */
 
 var db = {
-  Pokemon: [
+  pokemon: [
 
   ],
 };
