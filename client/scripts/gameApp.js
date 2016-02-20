@@ -1,5 +1,3 @@
-
-
 var lastTime;
 var gameTime = 0;
 // var appWidth = canvas.getAttribute('width');
@@ -22,22 +20,21 @@ var enemy = {
   hp: 1000
 };
 
-var background = new Image();
-var monster = new Image();
-var heroStats = new Image();
-var battleOptions = new Image();
-var shield = new Image();
-var textbox = new Image();
-heroStats.src = 'images/battleScene/heroStatus.png';
-monster.src = 'images/monster0.png';
-background.src = 'images/battleScene/bg.png';
-battleOptions.src = 'images/battleScene/battleOptions.png';
-shield.src = 'images/shield.png';
-
 function battleState(){
   clearCanvas(ctx);
-
-
+  var upperTextBox = new Image();
+  var background = new Image();
+  var monster = new Image();
+  var heroStats = new Image();
+  var battleOptions = new Image();
+  var shield = new Image();
+  var textbox = new Image();
+  upperTextBox.src = 'images/battleScene/upperTextBox.png';
+  heroStats.src = 'images/battleScene/heroStatus.png';
+  monster.src = 'images/monster0.png';
+  background.src = 'images/battleScene/bg.png';
+  battleOptions.src = 'images/battleScene/battleOptions.png';
+  shield.src = 'images/shield.png';
 
   background.onload = function(){
     ctx.drawImage(background,0,0);
@@ -49,7 +46,7 @@ function battleState(){
     ctx.drawImage(heroStats,5,375);
   };
   battleOptions.onload = function(){
-    ctx.drawImage(battleOptions, 155, 375);
+    ctx.drawImage(battleOptions, 230, 375);
   };
   // shield.onload = function(){
   //   ctx.drawImage(shield, 165, 375);
@@ -110,7 +107,7 @@ function battleState(){
       ctx.drawImage(background,0,0);
       ctx.drawImage(monster,282,140);
       ctx.drawImage(heroStats,5,375);
-      ctx.drawImage(battleOptions, 155, 375);
+      ctx.drawImage(battleOptions, 215, 375);
       ctx.drawImage(shield, 165, 375);
       //text stuff for heroStatus
       ctx.font = '14px Arial';
@@ -119,13 +116,11 @@ function battleState(){
       ctx.fillText('HP:',10,420);
       //text stuff for battleOptions
       ctx.fillText('Attack', 200, 395);
-
       showTextBox();
-
       console.log('transition complete!'); }, 10);
+
+
   }
 
-
   battleScene();
-
 };
