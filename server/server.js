@@ -96,7 +96,7 @@ function printTables() {
 
     db.all('SELECT * FROM Pokemon [INNER] JOIN Types USING (pkdx_id)', function(error, rows) {
       console.log(rows);
-    });data
+    });
   });
 }
 
