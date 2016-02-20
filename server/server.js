@@ -137,7 +137,7 @@ function requestPokemonSingular(url, current, max){
 // Initiates pokemon info request upon
 function getAllPokemonEasy() {
   var startingId = 1;  // Select starting poke ID
-  var maxPokemon = 500;  // Select number of pokemon to be downloaded
+  var maxPokemon = 30;  // Select number of pokemon to be downloaded
   for (var i = startingId; i < startingId + maxPokemon; i++) {
     console.log('Requesting Pokemon #' + i);
     requestPokemonSingular('http://pokeapi.co/api/v1/pokemon/' + i, i, maxPokemon);
