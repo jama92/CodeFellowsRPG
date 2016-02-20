@@ -39,18 +39,24 @@ download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function
 */
 
 var db = {
-  pokemon: [
-    /*
-    {
-    id: 0,
-    name: 'morty',
-    stats: []
-    }
-    */
-  ]
+  Pokemon: [
+
+  ],
 };
 
-var spriteLength = 0;
+var spriteCounter = 0;
+
+function Pokemon(body) {
+  this.name = body.name;
+  this.pkdx_id = body.pkdx_id;
+  this.attack = (body.attack + body.sp_atk)/2;
+  this.defense = (body.defense + body.sp_def)/2;
+  this.speed = body.speed;
+  this.hp = body.hp;
+  this.types = body.types;
+  this.sprite = 'localhost:3000/' + body.pkdx_id + '.png';
+  this.powerLevel = (this.attack + this.defense + this.hp)/3;
+}
 
 /*
 function requestPokemonList(){
@@ -69,9 +75,10 @@ function requestSpriteUrl(pokemon, max) {
     console.log('Requesting sprite for Pokemon #' + pokeId);
     download(spriteUrl, 'media/' + pokeId + '.png', function() {
       console.log('Sprite downloaded for pokemon #' + pokeId);
-      spriteLength += 1;
-      if (max == spriteLength) {
+      spriteCounter += 1;
+      if (max == spriteCounter) {
         console.log('Pokemon data download complete');
+        console.log(db.pokemon);
         startListening();
       }
     });
@@ -82,11 +89,11 @@ function requestSpriteUrl(pokemon, max) {
 // Takes pokemon resource url and poke id as input and GETs a pokemon object and adds it to the local db object.
 // Also takes total number of pokemon requested as input so that it knows whether a response is the last one
 // As pokeapi doesn't respond in order of requests. Starts up server after last request
-// TODO: change server to start up after all sprites are downloaded instead
+// DONE: change server to start up after all sprites are downloaded instead
 function requestPokemonSingular(url, current, max){
   request(url, function(error, response, body) {
     body = JSON.parse(body);
-    db.pokemon.push(body);
+    db.pokemon.push(new Pokemon(body));
     console.log('Pokemon #'+current+' downloaded...');
     requestSpriteUrl(body, max);
   });
@@ -107,7 +114,7 @@ function processPokemonList(pokeList) {
 // Initiates pokemon info request upon
 function getAllPokemonEasy() {
   var startingId = 1;  // Select starting poke ID
-  var maxPokemon = 150;  // Select number of pokemon to be downloaded
+  var maxPokemon = 15;  // Select number of pokemon to be downloaded
   for (var i = startingId; i <= maxPokemon; i++) {
     console.log('Requesting Pokemon #' + i);
     requestPokemonSingular('http://pokeapi.co/api/v1/pokemon/' + i, i, maxPokemon);
