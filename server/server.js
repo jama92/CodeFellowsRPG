@@ -74,7 +74,7 @@ function requestSpriteUrl(pokemon, max) {
   request('http://pokeapi.co/'+spriteUrl, function(error, response, body) {
     var spriteUrl = 'http://pokeapi.co' + JSON.parse(body).image;
     console.log('Requesting sprite for Pokemon #' + pokeId);
-    download(spriteUrl, 'media/sprites/' + pokeId + '.png', function() {
+    download(spriteUrl, './media/sprites/' + pokeId + '.png', function() {
       console.log('Sprite downloaded for pokemon #' + pokeId);
       spriteCounter += 1;
       if (max == spriteCounter) {
