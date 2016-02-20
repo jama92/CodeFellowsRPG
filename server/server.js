@@ -22,7 +22,8 @@ app.use(function(req, res, next){
 
 // serves access to sprites in /media
 app.use(serveStatic('media'));
-
+var file = 'database.db';
+var exists = fs.existsSync(file);
 // download function sourced from http://stackoverflow.com/questions/12740659/downloading-images-with-node-js
 var download = function(uri, filename, callback){
   request.head(uri, function(err, res, body){
@@ -33,39 +34,71 @@ var download = function(uri, filename, callback){
   });
 };
 
-/*--------- Download() example
-download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function(){
-  console.log('done');
+// initialize database, sourced from http://blog.modulus.io/nodejs-and-sqlite
+
+var file = './database.db';
+var exists = fs.existsSync(file);
+var sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database(file);
+
+db.serialize(function() {
+  console.log('Creating new Pokemon table');
+  db.run('drop table if exists Pokemon');
+  db.run('CREATE TABLE Pokemon (name TEXT, pkdx_id INT, attack INT, defense INT, hp INT, sprite TEXT, powerLevel INT)');
+  console.log('Creating new Types table');
+  db.run('drop table if exists Types');
+  db.run('CREATE TABLE Types (pkdx_id INT, type TEXT)');
 });
-*/
 
-var db = {
-  pokemon: [
-
-  ],
-};
 
 var spriteCounter = 0;
 
 function Pokemon(body) {
   this.name = body.name;
-  this.pkdx_id = body.pkdx_id;
+  this.pkdx_id = parseInt(body.pkdx_id);
   this.attack = Math.round((body.attack + body.sp_atk)/2);
   this.defense = Math.round((body.defense + body.sp_def)/2);
-  this.speed = body.speed;
-  this.hp = body.hp;
+  this.speed = parseInt(body.speed);
+  this.hp = parseInt(body.hp);
   this.types = body.types;
   this.sprite = 'localhost:3000/sprites/' + body.pkdx_id + '.png';
   this.powerLevel = Math.round(((body.attack + body.sp_atk)/2 + (body.defense + body.sp_def)/2 + this.hp)/3);
 }
 
-/*
-function requestPokemonList(){
-  request('http://pokeapi.co/api/v2/pokemon/', function(error, response, body) {
-    processPokemonList(JSON.parse(body));
+// Takes pokemon object and inserts into database
+function insertPokemon(p) {
+  db.serialize(function() {
+    console.log('Inserting Pokemon #' + p.pkdx_id + ' into database');
+    db.run('INSERT INTO Pokemon(name, pkdx_id, attack, defense, hp, sprite, powerLevel) VALUES(' +
+           '"'+p.name+'", '+p.pkdx_id+', '+p.attack+', '+p.defense+', '+p.hp+', "'+p.sprite+'", '+p.powerLevel+')');
+    insertTypes(p);
   });
 }
-*/
+
+// Takes pokemon object and inserts its types into database
+function insertTypes(p) {
+  p.types.forEach(function(ele){
+    db.run('INSERT INTO Types(pkdx_id, type)' +
+           'VALUES('+p.pkdx_id+', "'+ele.name+'")');
+  });
+}
+
+// Selects and console logs tables, for bugtesting
+function printTables() {
+  db.serialize(function(){
+    db.all('SELECT * FROM Pokemon', function(error, rows) {
+      console.log(rows);
+    });
+
+    db.all('SELECT * FROM Types', function(error, rows) {
+      console.log(rows);
+    });
+
+    db.all('SELECT * FROM Pokemon [INNER] JOIN Types USING (pkdx_id)', function(error, rows) {
+      console.log(rows);
+    });
+  });
+}
 
 // Takes pokemon object as input, scrapes resource location for sprite, then downloads it
 function requestSpriteUrl(pokemon, max) {
@@ -79,7 +112,6 @@ function requestSpriteUrl(pokemon, max) {
       spriteCounter += 1;
       if (max == spriteCounter) {
         console.log('Pokemon data download complete');
-        console.log(db.pokemon);
         startListening();
       }
     });
@@ -93,30 +125,20 @@ function requestSpriteUrl(pokemon, max) {
 // DONE: change server to start up after all sprites are downloaded instead
 function requestPokemonSingular(url, current, max){
   request(url, function(error, response, body) {
-    body = JSON.parse(body);
-    db.pokemon.push(new Pokemon(body));
     console.log('Pokemon #'+current+' downloaded...');
+    body = JSON.parse(body);
+    var pokemon = new Pokemon(body);
+    insertPokemon(pokemon);
     requestSpriteUrl(body, max);
   });
 }
 
-/*
-function processPokemonList(pokeList) {
-  var counter = 0;
-  while (counter <= 4){
-    pokeList.forEach(function(pokemon) {
-      counter += 1;
-      console.log(counter);
-      requestPokemonSingular(pokemon.url);
-    });
-  }
-}*/
 
 // Initiates pokemon info request upon
 function getAllPokemonEasy() {
   var startingId = 1;  // Select starting poke ID
-  var maxPokemon = 15;  // Select number of pokemon to be downloaded
-  for (var i = startingId; i <= maxPokemon; i++) {
+  var maxPokemon = 500;  // Select number of pokemon to be downloaded
+  for (var i = startingId; i < startingId + maxPokemon; i++) {
     console.log('Requesting Pokemon #' + i);
     requestPokemonSingular('http://pokeapi.co/api/v1/pokemon/' + i, i, maxPokemon);
   }
@@ -129,6 +151,52 @@ function startListening() {
     console.log('Listening at port 3000');
   });
 }
+
+function getFire(res){
+  console.log('Getting random fire type pokemon...');
+  var pokeList = [];
+  db.serialize(function(){
+    db.all('SELECT * FROM Pokemon [INNER] JOIN Types USING (pkdx_id) WHERE type="fire"', function(error, rows) {
+      console.log(rows);
+      for(var i = 0; i < 3; i++){
+        pokeList.push(rows[parseInt(Math.random() * rows.length)]);
+      }
+      getWater(pokeList, res);
+    });
+  });
+}
+
+function getWater(pokeList, res){
+  console.log('Getting random water type pokemon...');
+  db.serialize(function(){
+    db.all('SELECT * FROM Pokemon [INNER] JOIN Types USING (pkdx_id) WHERE type="water"', function(error, rows) {
+      console.log(rows);
+      for(var i = 0; i < 3; i++){
+        pokeList.push(rows[parseInt(Math.random() * rows.length)]);
+      }
+      getGrass(pokeList, res);
+    });
+  });
+};
+
+function getGrass(pokeList, res){
+  console.log('Getting random grass type pokemon...');
+  db.serialize(function(){
+    db.all('SELECT * FROM Pokemon [INNER] JOIN Types USING (pkdx_id) WHERE type="grass"', function(error, rows) {
+      console.log(rows);
+      for(var i = 0; i < 3; i++){
+        pokeList.push(rows[parseInt(Math.random() * rows.length)]);
+      }
+      console.log(pokeList);
+      res.json(pokeList);
+    });
+  });
+};
+
+
+app.get('/getRandom', function (req, res) {
+  getFire(res);
+});
 
 
 getAllPokemonEasy();
