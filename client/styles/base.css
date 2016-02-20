@@ -7,15 +7,7 @@ html {
 }
 
 body {
-<<<<<<< HEAD
-<<<<<<< HEAD
-  background-image: url("images/desk1.jpg");
-=======
   background-image: url("../images/site/desk1.jpg");
->>>>>>> 2c7c3f487d4df8571755b8f4643f179b624ca72b
-=======
-  background-image: url("../images/site/desk1.jpg");
->>>>>>> f17710326c89aa7b86e2802cf6bdf153e24c87ce
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
