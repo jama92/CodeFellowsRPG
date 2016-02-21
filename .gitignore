@@ -2,3 +2,4 @@ node_modules
 server/media/sprites/*.png
 test.js
 Thumbs.db
+database.db
