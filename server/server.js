@@ -1,11 +1,17 @@
+// TODO: create config file to hold variables for number and types of pokemon to generate
+
 var bodyParser = require('body-parser');
 var express = require('express');
 var request = require('request');
 var fs = require('fs');
 var serveStatic = require('serve-static');
+// initialize database, sourced from http://blog.modulus.io/nodejs-and-sqlite
+var file = './database.db';
+var exists = fs.existsSync(file);
+var sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database(file);
 
 var app = express();
-
 
 app.use(bodyParser.json());
 
@@ -20,39 +26,10 @@ app.use(function(req, res, next){
   next();
 });
 
-// serves access to sprites in /media
-app.use(serveStatic('media'));
-var file = 'database.db';
-var exists = fs.existsSync(file);
-// download function sourced from http://stackoverflow.com/questions/12740659/downloading-images-with-node-js
-var download = function(uri, filename, callback){
-  request.head(uri, function(err, res, body){
-    console.log('Download content-type:', res.headers['content-type']);
-    console.log('Download content-length:', res.headers['content-length']);
-
-    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-  });
-};
-
-// initialize database, sourced from http://blog.modulus.io/nodejs-and-sqlite
-
-var file = './database.db';
-var exists = fs.existsSync(file);
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database(file);
-
-db.serialize(function() {
-  console.log('Creating new Pokemon table');
-  db.run('drop table if exists Pokemon');
-  db.run('CREATE TABLE Pokemon (name TEXT, pkdx_id INT, attack INT, defense INT, hp INT, sprite TEXT, powerLevel INT)');
-  console.log('Creating new Types table');
-  db.run('drop table if exists Types');
-  db.run('CREATE TABLE Types (pkdx_id INT, type TEXT)');
-});
-
-
+// Keeps track of downloaded sprites
 var spriteCounter = 0;
 
+// Pokemon object constructor
 function Pokemon(body) {
   this.name = body.name;
   this.pkdx_id = parseInt(body.pkdx_id);
@@ -64,6 +41,29 @@ function Pokemon(body) {
   this.sprite = 'https://localhost:3000/sprites/' + body.pkdx_id + '.png';
   this.powerLevel = Math.round(((body.attack + body.sp_atk)/2 + (body.defense + body.sp_def)/2 + this.hp)/3);
 }
+
+
+
+// download function sourced from http://stackoverflow.com/questions/12740659/downloading-images-with-node-js
+function download(uri, filename, callback){
+  request.head(uri, function(err, res, body){
+    console.log('Download content-type:', res.headers['content-type']);
+    console.log('Download content-length:', res.headers['content-length']);
+    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+  });
+}
+
+function makeTables() {
+  db.serialize(function() {
+    console.log('Creating new Pokemon table');
+    db.run('drop table if exists Pokemon');
+    db.run('CREATE TABLE Pokemon (name TEXT, pkdx_id INT, attack INT, defense INT, hp INT, sprite TEXT, powerLevel INT)');
+    console.log('Creating new Types table');
+    db.run('drop table if exists Types');
+    db.run('CREATE TABLE Types (pkdx_id INT, type TEXT)');
+  });
+}
+
 
 // Takes pokemon object and inserts into database
 function insertPokemon(p) {
@@ -108,7 +108,6 @@ function requestSpriteUrl(pokemon, max) {
     var spriteUrl = 'http://pokeapi.co' + JSON.parse(body).image;
     console.log('Requesting sprite for Pokemon #' + pokeId);
     download(spriteUrl, './media/sprites/' + pokeId + '.png', function() {
-      console.log('Sprite downloaded for pokemon #' + pokeId);
       spriteCounter += 1;
       if (max == spriteCounter) {
         console.log('Pokemon data download complete');
@@ -137,7 +136,7 @@ function requestPokemonSingular(url, current, max){
 // Initiates pokemon info request upon
 function getAllPokemonEasy() {
   var startingId = 1;  // Select starting poke ID
-  var maxPokemon = 30;  // Select number of pokemon to be downloaded
+  var maxPokemon = 10;  // Select number of pokemon to be downloaded
   for (var i = startingId; i < startingId + maxPokemon; i++) {
     console.log('Requesting Pokemon #' + i);
     requestPokemonSingular('http://pokeapi.co/api/v1/pokemon/' + i, i, maxPokemon);
@@ -147,56 +146,51 @@ function getAllPokemonEasy() {
 // Starts listening at port 3000
 function startListening() {
   console.log('Starting up server');
+  // serves access to sprites in /media
+  app.use(serveStatic('media'));
   app.listen(3000, function(){
     console.log('Listening at port 3000');
   });
 }
 
-function getFire(res){
-  console.log('Getting random fire type pokemon...');
-  var pokeList = [];
-  db.serialize(function(){
-    db.all('SELECT * FROM Pokemon [INNER] JOIN Types USING (pkdx_id) WHERE type="fire"', function(error, rows) {
-      console.log(rows);
+// pokeList and types should be arrays
+function getPokemonByType(pokeList, res, types){
+  var type = types.pop();
+
+  db.all('SELECT * FROM Pokemon [INNER] JOIN TYPES USING (pkdx_id) WHERE TYPE="'+type+'"', function(error, rows) {
+    if (rows.length > 0) {
       for(var i = 0; i < 3; i++){
         pokeList.push(rows[parseInt(Math.random() * rows.length)]);
       }
-      getWater(pokeList, res);
-    });
+      console.log('Added ' + type + ' type Pokemon to list');
+    } else {
+      console.log('No pokemon of type ' + type);
+    }
+
+    if(types.length > 0){
+      getPokemonByType(pokeList, res, types);
+    } else if(pokeList.length > 0) {
+      res.json(pokeList);
+    } else {
+      console.log('No pokemon were found');
+      res.json('Error: No pokemon available');
+    }
   });
 }
 
-function getWater(pokeList, res){
-  console.log('Getting random water type pokemon...');
-  db.serialize(function(){
-    db.all('SELECT * FROM Pokemon [INNER] JOIN Types USING (pkdx_id) WHERE type="water"', function(error, rows) {
-      console.log(rows);
-      for(var i = 0; i < 3; i++){
-        pokeList.push(rows[parseInt(Math.random() * rows.length)]);
-      }
-      getGrass(pokeList, res);
-    });
-  });
-};
-
-function getGrass(pokeList, res){
-  console.log('Getting random grass type pokemon...');
-  db.serialize(function(){
-    db.all('SELECT * FROM Pokemon [INNER] JOIN Types USING (pkdx_id) WHERE type="grass"', function(error, rows) {
-      console.log(rows);
-      for(var i = 0; i < 3; i++){
-        pokeList.push(rows[parseInt(Math.random() * rows.length)]);
-      }
-      console.log(pokeList);
-      res.json(pokeList);
-    });
-  });
-};
-
+function startUp(){
+  makeTables();
+  getAllPokemonEasy();
+}
 
 app.get('/getRandom', function (req, res) {
-  getFire(res);
+  console.log('Request for random Pokemon received');
+  getPokemonByType([], res, ['fire', 'water', 'grass']);
 });
 
+app.get('/getByType/:type', function (req, res) {
+  console.log('Request for ' + req.params.type + ' Pokemon received');
+  getPokemonByType([], res, [req.params.type]);
+});
 
-getAllPokemonEasy();
+startUp();
