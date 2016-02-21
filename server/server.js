@@ -181,11 +181,12 @@ function startUp(){
 }
 
 app.get('/getRandom', function (req, res) {
+  var types = config.randomTypes.slice(0);
   console.log('Request for random Pokemon received');
-  getPokemonByType([], res, config.randomTypes);
+  getPokemonByType([], res, types);
 });
 
-app.get('/getByType/:type', function (req, res) {
+app.get('/getRandom/:type', function (req, res) {
   console.log('Request for ' + req.params.type + ' Pokemon received');
   getPokemonByType([], res, [req.params.type]);
 });
