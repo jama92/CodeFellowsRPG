@@ -1,5 +1,4 @@
-// TODO: create config file to hold variables for number and types of pokemon to generate
-
+var config = require('./config');
 var bodyParser = require('body-parser');
 var express = require('express');
 var request = require('request');
@@ -135,11 +134,9 @@ function requestPokemonSingular(url, current, max){
 
 // Initiates pokemon info request upon
 function getAllPokemonEasy() {
-  var startingId = 1;  // Select starting poke ID
-  var maxPokemon = 10;  // Select number of pokemon to be downloaded
-  for (var i = startingId; i < startingId + maxPokemon; i++) {
+  for (var i = config.pokeStart; i < config.pokeStart + config.pokeEnd; i++) {
     console.log('Requesting Pokemon #' + i);
-    requestPokemonSingular('http://pokeapi.co/api/v1/pokemon/' + i, i, maxPokemon);
+    requestPokemonSingular('http://pokeapi.co/api/v1/pokemon/' + i, i, config.pokeEnd);
   }
 }
 
@@ -159,7 +156,7 @@ function getPokemonByType(pokeList, res, types){
 
   db.all('SELECT * FROM Pokemon [INNER] JOIN TYPES USING (pkdx_id) WHERE TYPE="'+type+'"', function(error, rows) {
     if (rows.length > 0) {
-      for(var i = 0; i < 3; i++){
+      for(var i = 0; i < config.queryQty; i++){
         pokeList.push(rows[parseInt(Math.random() * rows.length)]);
       }
       console.log('Added ' + type + ' type Pokemon to list');
@@ -185,7 +182,7 @@ function startUp(){
 
 app.get('/getRandom', function (req, res) {
   console.log('Request for random Pokemon received');
-  getPokemonByType([], res, ['fire', 'water', 'grass']);
+  getPokemonByType([], res, config.randomTypes);
 });
 
 app.get('/getByType/:type', function (req, res) {
