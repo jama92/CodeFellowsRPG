@@ -8,7 +8,7 @@ function showTextBox() {
   console.log('show Text Box');
 
 
-  textBox.src = 'images/battleScene/heroStatus.png';
+  textBox.src = 'images/battleScene/upperTextBox.png';
   textBox.xcoord = 14;
   textBox.ycoord = 14;
 
@@ -39,4 +39,45 @@ function hideTextBox() {
 
 
     console.log('transition complete!'); }, 10);
+}
+
+var count = 1;
+
+var myText;
+
+function setWinner(winner, loser) {
+
+  myText = winner + ' defeats ' + loser;
+}
+
+function setAttacker(entity) {
+
+
+  myText = entity + ' swings for ';
+}
+
+function setDamage(dmg) {
+
+  myText += dmg;
+}
+
+
+function textAnimate(entity) {
+
+
+  ctx.font = 'normal 16px "verdana"';
+  ctx.fillStyle = 'white';
+  ctx.fillText(myText.substr(0, count), 28, 42);
+  count++;
+
+  if (count < myText.length + 1) {
+
+    requestAnimationFrame(textAnimate);
+  }
+
+  if (count > myText.length) {
+
+    count = 1;
+    return;
+  }
 }
