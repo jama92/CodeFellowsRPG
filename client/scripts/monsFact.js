@@ -6,22 +6,22 @@ function Enemy (hp,attack,type,sprite) {
   this.sprite = sprite;
 }
 
+var enemy;
 var randomPokemon=[];
 var randomEnemy;
 
-function pickRandomEnemy() {
-  randomEnemy = randomPokemon[Math.floor(Math.random()*randomPokemon.length)];
-  console.log(randomEnemy);
-  function () {
-    enemy = new Enemy(randomEnemy.hp,randomEnemy.attack,randomEnemy.type,randomEnemy.sprite);
-    console.log(enemy);
-    function() {
-      enemy.newType();
-      console.log(enemy);
-    }
-  }
-}
-var enemy;
+// function pickRandomEnemy() {
+//   randomEnemy = randomPokemon[Math.floor(Math.random()*randomPokemon.length)];
+//   console.log(randomEnemy);
+//   (function () {
+//     enemy = new Enemy(randomEnemy.hp,randomEnemy.attack,randomEnemy.type,randomEnemy.sprite);
+//     console.log(enemy);
+//     (function() {
+//       enemy.newType();
+//       console.log(enemy);
+//     });
+//   });
+// }
 Enemy.prototype.newType = function() {
   if(this.type=='fire'){
     this.type = 'html';
@@ -37,4 +37,12 @@ Enemy.prototype.newType = function() {
 $.get('http://localhost:3000/getRandom', function(data) {
   randomPokemon=data;
   console.log(randomPokemon);
-}).then(pickRandomEnemy());
+}).then(function() {
+  randomEnemy = randomPokemon[Math.floor(Math.random()*randomPokemon.length)];
+}).then(function() {
+  enemy = new Enemy(randomEnemy.hp,randomEnemy.attack,randomEnemy.type,randomEnemy.sprite);
+  console.log(enemy);
+}).then(function() {
+  enemy.newType();
+  console.log(enemy);
+});
