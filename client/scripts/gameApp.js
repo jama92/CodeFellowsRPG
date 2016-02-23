@@ -43,11 +43,11 @@ var hero = {
   attack: 100
 };
 
-var enemy = {
-  name:'bug',
-  currentHP: 1000,
-  maxHP: 1000
-};
+// var enemy = {
+//   name:'bug',
+//   currentHP: 1000,
+//   maxHP: 1000
+// };
 
 var newBattle;
 
@@ -67,13 +67,14 @@ var enemyHealthBarWidth = 160;
 var enemyHealthBarHeight = 10;
 var heroHealthBarWidth = 160;
 var heroHealthBarHeight = 10;
+
 upperTextBox.src = 'images/battleScene/upperTextBox.png';
 heroStats.src = 'images/battleScene/heroStatus.png';
 heroStats.xcoord = (displayBottomBoxLeftPadding);
 heroStats.ycoord = (appHeight - displayBottomBoxHeight - displayBottomBoxBottomPadding);
 console.log(heroStats.xcoord);
 console.log(heroStats.ycoord);
-monster.src = 'images/battleScene/monster0.png';
+
 background.src = 'images/battleScene/bg.png';
 battleOptions.src = 'images/battleScene/battleOptions.png';
 shield.src = 'images/shield.png';
@@ -82,7 +83,9 @@ enemyHealthBar.src = 'images/battleScene/hpBar.png';
 heroHealthBarBackground.src = 'images/battleScene/hpBarBackground.png';
 enemyHealthBarBackground.src = 'images/battleScene/hpBarBackground.png';
 
-
+var drawMonster = function(){
+  ctx.drawImage(monster,282,140);
+};
 
 
 function battleState(){
@@ -90,10 +93,9 @@ function battleState(){
 
 
   newBattle = true;
-
+  monster.src = enemy.sprite;
   hero.currentHP = hero.maxHP;
   enemy.currentHP = enemy.maxHP;
-
 
   console.log('player' + hero.currentHP);
   console.log('enemy' + enemy.currentHP);
@@ -254,14 +256,17 @@ function battleState(){
     }
   };
 
+
   function battleScene(){
     clearCanvas(ctx);
+    ctx.drawImage(background,0,0);
     setTimeout(function(){
-      ctx.drawImage(background,0,0);
+
       ctx.drawImage(monster,282,140);
       ctx.drawImage(heroStats, heroStats.xcoord, heroStats.ycoord);
       ctx.drawImage(battleOptions, 215, 375);
       ctx.drawImage(shield, 165, 375);
+
 
 
       ctx.drawImage(heroHealthBarBackground, 35,410);
@@ -309,10 +314,7 @@ function battleState(){
 
     monsterName();
 
-    preLoad();
-
     battleScene();
-
   }
 
   monsterName();
