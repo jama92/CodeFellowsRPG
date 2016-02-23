@@ -2,6 +2,10 @@ html {
   height: 100%;
 }
 
+body {
+  margin-bottom: 15em;
+}
+
 canvas {
   margin: 1em;
 }
@@ -18,6 +22,9 @@ canvas {
   align-items: center;
 }
 
+.article {
+  margin-left: 2em;
+}
 
 #mycanvas {
   text-align: center;
