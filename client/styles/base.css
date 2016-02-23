@@ -13,10 +13,12 @@ canvas {
   background-color: black;
 }
 
+button {
+  color: white;
+  border: none;
+}
+
 .container {
   background-color: #06090e;
   background-color: rgba(6, 9, 14, .90);
-}
-
-.main {
 }

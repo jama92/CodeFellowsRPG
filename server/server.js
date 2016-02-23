@@ -37,7 +37,7 @@ function Pokemon(body) {
   this.speed = parseInt(body.speed);
   this.hp = parseInt(body.hp);
   this.types = body.types;
-  this.sprite = 'https://localhost:3000/sprites/' + body.pkdx_id + '.png';
+  this.sprite = 'http://localhost:3000/sprites/' + body.pkdx_id + '.png';
   this.powerLevel = Math.round(((body.attack + body.sp_atk)/2 + (body.defense + body.sp_def)/2 + this.hp)/3);
 }
 
