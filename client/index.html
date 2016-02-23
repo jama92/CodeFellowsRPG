@@ -5,7 +5,7 @@
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>CodeFellows RPG</title>
+  <title>Code Fellows RPG</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -21,12 +21,29 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet" href="vendor/styles/normalize.css">
   <link rel="stylesheet" href="vendor/styles/skeleton.css">
-  <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/base.css">
 
-  <!-- Favicon
+  <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="/vendor/images/png" href="/vendor/images/favicon.png">
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
 
 </head>
 <body>
@@ -36,22 +53,36 @@
   <div class="container">
     <header class="header row">
       <h1 class="twelve columns">
-        CodeFellows RPG
+        Code Fellows RPG
       </h1>
     </header>
   </div>
 
-<div id='mycanvas'></div>
-
-
   <div class="container">
-    <main class="main row">
-      <div class="one-half column">
-        <h4>Basic Page</h4>
-        <p>This index.html page is a placeholder with the CSS, font and favicon. It's just waiting for you to add some content! If you need some help hit up the <a href="http://www.getskeleton.com">Skeleton documentation</a>.</p>
-      </div>
-    </main>
+    <div id='mycanvas'></div>
   </div>
+
+
+  <nav class="nav container">
+    <div class="row">
+      <button id="home-button" class="four columns">Home</button>
+      <button id="about-button" class="four columns">About Us</button>
+      <button id="github-button" class="four columns">Github</button>
+    </div>
+    <div id="hook">
+    </div>
+
+    <script id="article-template" type="text/x-handlebars-template">
+      <hr class="divide"/>
+      <br />
+      <article class="article row">
+        <h3 class="articleHeader">{{header}}</h1>
+          <p class="articleBody">
+            {{{body}}}
+          </p>
+    </script>
+    </article>
+  </nav>
 
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -60,16 +91,20 @@
 <!-- Script Dependencies
 –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="vendor/scripts/handlebars.js"></script>
 <script src="vendor/resources.js"></script>
 <script src="scripts/monsFact.js"></script>
 <script src="scripts/monsterData.js"></script>
 <script src="scripts/inputHandler.js"></script>
 <script src="scripts/spritePrep.js"></script>
 <script src="scripts/startMenu.js"></script>
+<script src="scripts/imageLoader.js"></script>
 <script src="scripts/gameApp.js"></script>
-<script src="scripts/canvasController.js"></script>
-<script src="scripts/textController.js"></script>
+<script src="scripts/nav.js"></script>
 
+<script src="scripts/canvasController.js"></script>
+
+<script src="scripts/textController.js"></script>
 
 
 

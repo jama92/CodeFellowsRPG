@@ -34,7 +34,7 @@ Enemy.prototype.newType = function() {
   }
   console.log(this.type);
 };
-$.get('http:localhost:3000/getRandom', function(data) {
+$.get('http://localhost:3000/getRandom', function(data) {
   randomPokemon=data;
   console.log(randomPokemon);
 }).then(pickRandomEnemy());
