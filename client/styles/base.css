@@ -2,39 +2,21 @@
   color: white;
 }
 
-html {
-  height: 100%;
-}
-
 body {
   background-image: url("../images/site/desk1.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
-  padding-bottom: 100vh;
-}
-
-.container {
-  margin-bottom: 2em;
-  background-color: #06090e;
-  background-color: rgba(6, 9, 14, .85);
-}
-
-.header {
-  margin-top: none;
-  height: 30vh;
-  text-align: center;
-  display: flex;
-  align-items: center;
-}
-
-.main {
-}
-
-#mycanvas{
-  text-align: center;
 }
 
 canvas {
   background-color: black;
+}
+
+.container {
+  background-color: #06090e;
+  background-color: rgba(6, 9, 14, .90);
+}
+
+.main {
 }

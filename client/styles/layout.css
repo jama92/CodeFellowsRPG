@@ -1,0 +1,23 @@
+html {
+  height: 100%;
+}
+
+canvas {
+  margin: 1em;
+}
+
+.container {
+  margin-bottom: 2em;
+}
+
+.header {
+  margin-top: none;
+  height: 20vh;
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
+
+#mycanvas {
+  text-align: center;
+}
