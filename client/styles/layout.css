@@ -10,20 +10,39 @@ canvas {
   margin: 1em;
 }
 
+hr {
+}
+
 .container {
   margin-bottom: 2em;
 }
 
 .header {
   margin-top: none;
-  height: 20vh;
+  height: 15vh;
   text-align: center;
   display: flex;
   align-items: center;
 }
 
+.divide{
+  text-align:center;
+  margin-top: 0;
+  margin-bottom: 1em;
+  margin-left: 4em;
+  margin-right: 4em;
+}
+
 .article {
-  margin-left: 2em;
+  padding-bottom: 3em;
+}
+
+.articleHeader {
+  text-align: center;
+}
+
+.articleBody {
+  margin-left: 3em;
 }
 
 #mycanvas {
