@@ -2,7 +2,7 @@ var canvas = document.createElement('canvas');
 var ctx = canvas.getContext('2d');
 canvas.width = 640;
 canvas.height = 480;
-//document.body.appendChild(canvas);
+// document.body.appendChild(canvas);
 $('#mycanvas').append(canvas);
 var appWidth = canvas.getAttribute('width');
 var appHeight = canvas.getAttribute('height');
