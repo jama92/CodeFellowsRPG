@@ -2,11 +2,20 @@
   color: white;
 }
 
+<<<<<<< HEAD
+=======
+a {
+  text-decoration: none;
+}
+
+
+>>>>>>> 5ce8bdb5cc8c72fee2fbdf9cd2f1a62c220c1aeb
 body {
   background-image: url("../images/site/desk1.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
+<<<<<<< HEAD
 }
 
 canvas {
@@ -21,4 +30,22 @@ button {
 .container {
   background-color: #06090e;
   background-color: rgba(6, 9, 14, .90);
+=======
+}
+
+canvas {
+  background-color: black;
+}
+
+button {
+  color: white;
+  border: none;
+  font-size: 1.5em;
+}
+
+
+.container {
+  background-color: #06090e;
+  background-color: rgba(6, 9, 14, .95);
+>>>>>>> 5ce8bdb5cc8c72fee2fbdf9cd2f1a62c220c1aeb
 }

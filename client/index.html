@@ -52,6 +52,26 @@
       <p class="articleBody">
         Welcome to Code Fellows RPG!
       </p>
+
+
+  <nav class="nav container">
+    <div class="row">
+      <button id="home-button" class="four columns">Home</button>
+      <button id="about-button" class="four columns">About Us</button>
+      <button id="github-button" class="four columns">Github</button>
+    </div>
+    <div id="hook">
+    </div>
+
+    <script id="article-template" type="text/x-handlebars-template">
+      <hr class="divide"/>
+      <br />
+      <article class="article row">
+        <h3 class="articleHeader">{{header}}</h1>
+          <p class="articleBody">
+            {{{body}}}
+          </p>
+    </script>
     </article>
   </nav>
 
@@ -62,12 +82,16 @@
 <!-- Script Dependencies
 –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="vendor/scripts/handlebars.js"></script>
 <script src="vendor/resources.js"></script>
 <script src="scripts/monsterData.js"></script>
 <script src="scripts/inputHandler.js"></script>
 <script src="scripts/spritePrep.js"></script>
 <script src="scripts/startMenu.js"></script>
 <script src="scripts/gameApp.js"></script>
+
+<script src="scripts/nav.js"></script>
+
 <script src="scripts/canvasController.js"></script>
 <script src="scripts/textController.js"></script>
 <script src="scripts/monsFact.js"></script>

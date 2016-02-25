@@ -2,22 +2,61 @@ html {
   height: 100%;
 }
 
+<<<<<<< HEAD
+=======
+body {
+  margin-bottom: 15em;
+}
+
+>>>>>>> 5ce8bdb5cc8c72fee2fbdf9cd2f1a62c220c1aeb
 canvas {
   margin: 1em;
 }
 
+<<<<<<< HEAD
+=======
+hr {
+}
+
+>>>>>>> 5ce8bdb5cc8c72fee2fbdf9cd2f1a62c220c1aeb
 .container {
   margin-bottom: 2em;
 }
 
 .header {
   margin-top: none;
+<<<<<<< HEAD
   height: 20vh;
+=======
+  height: 15vh;
+>>>>>>> 5ce8bdb5cc8c72fee2fbdf9cd2f1a62c220c1aeb
   text-align: center;
   display: flex;
   align-items: center;
 }
 
+<<<<<<< HEAD
+=======
+.divide{
+  text-align:center;
+  margin-top: 0;
+  margin-bottom: 1em;
+  margin-left: 4em;
+  margin-right: 4em;
+}
+
+.article {
+  padding-bottom: 3em;
+}
+
+.articleHeader {
+  text-align: center;
+}
+
+.articleBody {
+  margin-left: 3em;
+}
+>>>>>>> 5ce8bdb5cc8c72fee2fbdf9cd2f1a62c220c1aeb
 
 #mycanvas {
   text-align: center;
